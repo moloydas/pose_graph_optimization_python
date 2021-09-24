@@ -60,20 +60,22 @@ def write_g2o_file(filename, vertex, edges):
         g2o_file.write(line)
 
     for frame in edges:
-        frame_1 = frame
-        frame_2 = edges[frame]["frame_2"]
-        infor_mat = edges[frame]["info_mat"]
+        for edge in edges[frame]:
+            frame_1 = edge["frame_1"]
+            frame_2 = edge["frame_2"]
 
-        info_mat_txt = str(infor_mat[0,0])
-        info_mat_txt += " " + str(infor_mat[0,1])       
-        info_mat_txt += " " + str(infor_mat[0,2])
-        info_mat_txt += " " + str(infor_mat[1,1])
-        info_mat_txt += " " + str(infor_mat[1,2])
-        info_mat_txt += " " + str(infor_mat[2,2])
+            measurement = edge["measurement"]
 
-        line = "EDGE_SE2 " + str(frame_1) + " " + str(frame_2) + " " + str(vertex[frame][0]) + " " + str(vertex[frame][1]) + " " + str(vertex[frame][2]) + " " + info_mat_txt + '\n'
+            infor_mat = edge["info_mat"]
+            info_mat_txt = str(infor_mat[0,0])
+            info_mat_txt += " " + str(infor_mat[0,1])
+            info_mat_txt += " " + str(infor_mat[0,2])
+            info_mat_txt += " " + str(infor_mat[1,1])
+            info_mat_txt += " " + str(infor_mat[1,2])
+            info_mat_txt += " " + str(infor_mat[2,2])
 
-        g2o_file.write(line)
+            line = "EDGE_SE2 " + str(frame_1) + " " + str(frame_2) + " " + str(measurement[0]) + " " + str(measurement[1]) + " " + str(measurement[2]) + " " + info_mat_txt + '\n'
+            g2o_file.write(line)
 
     g2o_file.close()
 
