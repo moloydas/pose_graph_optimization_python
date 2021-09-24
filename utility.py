@@ -76,3 +76,14 @@ def write_g2o_file(filename, vertex, edges):
         g2o_file.write(line)
 
     g2o_file.close()
+
+def create_vertex_from_state_vector(state_vector):
+    state_vector = list(state_vector)
+
+    vertex = {}
+
+    for i,vec in enumerate(state_vector):
+        vec = list(vec)
+        vertex[str(i)] = vec
+
+    return vertex
