@@ -49,3 +49,30 @@ def limit_angles(theta):
     else:
         return theta
 
+# this function expects vertex and edges
+# vertex format:{"frame_1":frame, "measurement":[x,y,theta]} 
+# edges format :{"frame_1":ref_frame, "frame_2":frame, "measurement":[del_x, del_y, del_theta], "info_mat":np.array: 3x3 }
+def write_g2o_file(filename, vertex, edges):
+    g2o_file = open(filename, 'w+')
+
+    for frame in vertex:
+        line = "VERTEX_SE2 " + str(frame) + " " + str(vertex[frame][0]) + " " + str(vertex[frame][1]) + " " + str(vertex[frame][2]) + '\n'
+        g2o_file.write(line)
+
+    for frame in edges:
+        frame_1 = frame
+        frame_2 = edges[frame]["frame_2"]
+        infor_mat = edges[frame]["info_mat"]
+
+        info_mat_txt = str(infor_mat[0,0])
+        info_mat_txt += " " + str(infor_mat[0,1])       
+        info_mat_txt += " " + str(infor_mat[0,2])
+        info_mat_txt += " " + str(infor_mat[1,1])
+        info_mat_txt += " " + str(infor_mat[1,2])
+        info_mat_txt += " " + str(infor_mat[2,2])
+
+        line = "EDGE_SE2 " + str(frame_1) + " " + str(frame_2) + " " + str(vertex[frame][0]) + " " + str(vertex[frame][1]) + " " + str(vertex[frame][2]) + " " + info_mat_txt + '\n'
+
+        g2o_file.write(line)
+
+    g2o_file.close()
