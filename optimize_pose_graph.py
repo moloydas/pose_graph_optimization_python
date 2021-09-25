@@ -75,7 +75,7 @@ if __name__ == "__main__":
                 b[3*i:3*i+3, 0] += np.squeeze(Aij.T @ info_mat @ eij)
                 b[3*j:3*j+3, 0] += np.squeeze(Bij.T @ info_mat @ eij)
 
-        H[fix*3:,fix*3:] += np.eye(3)
+        H[fix*3:(fix+1)*3,fix*3:(fix+1)*3] += np.eye(3)
 
         print(f'itr: {itr}')
         print(f'total error: {total_error}')
