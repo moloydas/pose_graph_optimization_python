@@ -42,7 +42,7 @@ def angle2mat_2d(theta):
 def limit_angles(theta):
     if theta > np.pi:
         delta = theta - np.pi
-        return -delta
+        return -(np.pi - delta)
     elif theta < -np.pi:
         delta = abs(theta) - np.pi
         return np.pi - delta
