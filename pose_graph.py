@@ -10,9 +10,10 @@ def cal_jac_A_B(x_i, x_j, z_ij):
                         [math.cos(x_i[2]), -math.sin(x_i[2])]   ])
     del_t = (x_j[:2] - x_i[:2]).reshape(2,1)
 
-    A = -1 * np.eye(3)
+    A = np.zeros((3,3))
     A[:2,:2] = -R_ij.T @ R_i.T
     A[:2,2] = np.squeeze(R_ij.T @ d_R_i.T @ del_t)
+    A[2,2] = -1
 
     B = np.eye(3)
     B[:2,:2] = R_ij.T @ R_i.T
