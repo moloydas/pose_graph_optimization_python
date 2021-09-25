@@ -6,16 +6,25 @@ from plot_data import *
 import numpy as np
 import math
 import sys
+import argparse
 
 if __name__ == "__main__":
-    filename_1 = 'dataset/edges.txt'
-    filename_2 = 'dataset/gt.txt'
-    filename_3 = 'test_dataset.g2o'
-    filename_4 = 'test_datasetv2.g2o'
-    filename_5 = 'dataset/complete_edges.txt'
+    parser = argparse.ArgumentParser()
+    parser.add_argument("graph_input", help="give a valid g2o input file")
+    parser.add_argument("--fix_node", default='0', help="node to fix for optimization")
+    parser.add_argument("--output", default='', help="output filename of optimized graph")
+    args = parser.parse_args()
+
+    filename = args.graph_input
+    fix = int(args.fix_node)
+
+    if args.output == '':
+        output_filename = filename.split('.')[0] + '_otimized.g2o'
+    else:
+        output_filename = args.output
 
     # read the g2o file
-    all_vertex, all_edges, anchor_frame = parse_g2o_file(filename_5)
+    all_vertex, all_edges, anchor_frame = parse_g2o_file(filename)
 
     # draw graph
     draw_all_states(all_vertex, all_edges)
@@ -66,7 +75,7 @@ if __name__ == "__main__":
                 b[3*i:3*i+3, 0] += np.squeeze(Aij.T @ info_mat @ eij)
                 b[3*j:3*j+3, 0] += np.squeeze(Bij.T @ info_mat @ eij)
 
-        H[:3,:3] += np.eye(3)
+        H[fix*3:,fix*3:] += np.eye(3)
 
         print(f'itr: {itr}')
         print(f'total error: {total_error}')
@@ -81,4 +90,4 @@ if __name__ == "__main__":
     draw_all_states(new_vertex, all_edges)
 
     # write them in g2o
-    write_g2o_file('dataset/complete_edges_opt_2.txt', new_vertex, all_edges)
+    write_g2o_file(output_filename, new_vertex, all_edges)
