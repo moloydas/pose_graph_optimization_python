@@ -12,9 +12,10 @@ if __name__ == "__main__":
     filename_2 = 'dataset/gt.txt'
     filename_3 = 'test_dataset.g2o'
     filename_4 = 'test_datasetv2.g2o'
+    filename_5 = 'dataset/complete_edges.txt'
 
     # read the g2o file
-    all_vertex, all_edges, anchor_frame = parse_g2o_file(filename_4)
+    all_vertex, all_edges, anchor_frame = parse_g2o_file(filename_5)
 
     # draw graph
     draw_all_states(all_vertex, all_edges)
@@ -25,7 +26,9 @@ if __name__ == "__main__":
     x = np.array(x).reshape(-1,1)
     n_states = x.shape[0]
 
-    for itr in range(5):
+    print(f'number of nodes: {n_states/3}')
+
+    for itr in range(10):
         H = np.zeros((n_states, n_states))
         b = np.zeros((n_states,1))
         total_error = 0
@@ -35,10 +38,9 @@ if __name__ == "__main__":
                 i_frame = edge["frame_1"]
                 j_frame = edge["frame_2"]
                 i = int(i_frame)
+                j = int(j_frame)
 
                 x_i = x[3*i:3*i+3, 0]
-
-                j = int(j_frame)
                 t_i = vec2trans_2d(x_i)
 
                 x_j = x[3*j:3*j+3, 0]
@@ -75,4 +77,8 @@ if __name__ == "__main__":
 
     new_vertex = create_vertex_from_state_vector(x.reshape(-1, 3))
 
+    # view optimized states
     draw_all_states(new_vertex, all_edges)
+
+    # write them in g2o
+    write_g2o_file('dataset/complete_edges_opt_2.txt', new_vertex, all_edges)
