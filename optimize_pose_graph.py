@@ -27,7 +27,8 @@ if __name__ == "__main__":
     all_vertex, all_edges, anchor_frame = parse_g2o_file(filename)
 
     # draw graph
-    draw_all_states(all_vertex, all_edges)
+    draw_all_states(all_vertex, all_edges, draw_start_end_node=1)
+    # draw_all_states(all_vertex, draw_start_end_node=1)
 
     x = []
     for ref_frame in all_vertex:
@@ -87,7 +88,7 @@ if __name__ == "__main__":
     new_vertex = create_vertex_from_state_vector(x.reshape(-1, 3))
 
     # view optimized states
-    draw_all_states(new_vertex, all_edges)
+    draw_all_states(new_vertex, all_edges, draw_start_end_node=1)
 
     # write them in g2o
     write_g2o_file(output_filename, new_vertex, all_edges)
