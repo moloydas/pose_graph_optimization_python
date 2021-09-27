@@ -119,7 +119,7 @@ def parse_g2o_file(filename):
 if __name__ == '__main__':
     filename_1 = 'dataset/edges.txt'
     filename_2 = 'dataset/gt.txt'
-    filename_3 = 'dataset/test_3d_dataset.g2o'
+    filename_3 = 'dataset/sphere.g2o'
 
     vertex, edges, anchor_frame, dim = parse_g2o_file(filename_3)
 
