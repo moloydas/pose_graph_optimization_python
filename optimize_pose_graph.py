@@ -19,15 +19,15 @@ if __name__ == "__main__":
     fix = int(args.fix_node)
 
     if args.output == '':
-        output_filename = filename.split('.')[0] + '_otimized.g2o'
+        output_filename = filename.split('.')[0] + '_optimized.g2o'
     else:
         output_filename = args.output
 
     # read the g2o file
-    all_vertex, all_edges, anchor_frame = parse_g2o_file(filename)
+    all_vertex, all_edges, anchor_frame, dim = parse_g2o_file(filename)
 
     # draw graph
-    draw_all_states(all_vertex, all_edges, draw_start_end_node=1)
+    draw_2d_all_states(all_vertex, all_edges, draw_start_end_node=1)
     # draw_all_states(all_vertex, draw_start_end_node=1)
 
     x = []
@@ -88,7 +88,7 @@ if __name__ == "__main__":
     new_vertex = create_vertex_from_state_vector(x.reshape(-1, 3))
 
     # view optimized states
-    draw_all_states(new_vertex, all_edges, draw_start_end_node=1)
+    draw_2d_all_states(new_vertex, all_edges, draw_start_end_node=1, plot_immediate=1)
 
     # write them in g2o
     write_g2o_file(output_filename, new_vertex, all_edges)
