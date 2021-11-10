@@ -21,5 +21,7 @@ G2O file format can be found here: https://github.com/RainerKuemmerle/g2o/wiki/F
 4. A Primer on the Differential Calculus of 3D Orientations, Michael Bloesch, https://arxiv.org/pdf/1606.05285.pdf.
 5. Ein Rahmen für dünnbesetzte en.al. , A Framework for Sparse Non-Linear Least Squares Problems on Manifolds.
 
+Thanks to Luca Carlone I was able to run and validate my efforts using datasets available here. ![Intel and parking dataset](https://lucacarlone.mit.edu/datasets/)
+
 # To do
 [] complete the 3d pose graph optimization
