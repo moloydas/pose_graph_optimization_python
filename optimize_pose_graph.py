@@ -12,6 +12,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("graph_input", help="give a valid g2o input file")
     parser.add_argument("--fix_node", default='0', help="node to fix for optimization")
+    parser.add_argument("--save_itr", action='store_true', help="save iterations")
     parser.add_argument("--output", default='', help="output filename of optimized graph")
     args = parser.parse_args()
 
@@ -27,7 +28,7 @@ if __name__ == "__main__":
     all_vertex, all_edges, anchor_frame, dim = parse_g2o_file(filename)
 
     # draw graph
-    draw_2d_all_states(all_vertex, all_edges, draw_start_end_node=1)
+    draw_2d_all_states(all_vertex, all_edges, draw_start_end_node=1, plot_immediate=0, save_filename="initial")
     # draw_all_states(all_vertex, draw_start_end_node=1)
 
     x = []
@@ -84,6 +85,13 @@ if __name__ == "__main__":
         # optimize
         delta_x = np.linalg.inv(H) @ -b
         x += delta_x
+
+        if args.save_itr:
+            new_vertex = create_vertex_from_state_vector(x.reshape(-1, 3))
+
+            # save optimized states
+            draw_2d_all_states(new_vertex, all_edges, draw_start_end_node=1, plot_immediate=0, save_filename='itr_'+str(itr)+'.png')
+            
 
     new_vertex = create_vertex_from_state_vector(x.reshape(-1, 3))
 

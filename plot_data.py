@@ -44,17 +44,17 @@ def draw_3d_connecting_edge(axes, vec_1, vec_2, color='black', linestyle='solid'
 
     axes.plot([x1, x2], [y1, y2], [z1, z2], zdir='z', linestyle=linestyle, color=color, linewidth=linewidth)
 
-def draw_2d_all_states(vertex, edges={}, draw_start_end_node=0, plot_immediate=1, **kwargs):
+def draw_2d_all_states(vertex, edges={}, draw_start_end_node=0, plot_immediate=1, save_filename='' ,**kwargs):
     vertex_list = []
     for frame in vertex:
         vertex_list.append(vertex[frame])
 
-    draw_2d_vertex(np.array(vertex_list), 10, **kwargs)
+    draw_2d_vertex(np.array(vertex_list), 10, **kwargs, label='vertex')
 
     if draw_start_end_node != 0:
-        draw_2d_vertex(np.array([vertex['0']]), size=100, marker='*', color='r')
+        draw_2d_vertex(np.array([vertex['0']]), size=100, marker='*', color='r', label='start')
         last_node = list(vertex)[-1]
-        draw_2d_vertex(np.array([vertex[last_node]]), size=100, marker='*', color='g')
+        draw_2d_vertex(np.array([vertex[last_node]]), size=100, marker='*', color='g', label='stop')
 
     for frame in edges:
         for i in range(len(edges[frame])):
@@ -68,6 +68,13 @@ def draw_2d_all_states(vertex, edges={}, draw_start_end_node=0, plot_immediate=1
     plt.ylabel('Y(m)')
     if plot_immediate == 1:
         plt.show()
+    if save_filename != '':
+        plt.title(save_filename.split('.')[0])
+        plt.xlim(-12, 25)
+        plt.ylim(-40, 8)
+        print("saving..." + save_filename)
+        plt.savefig(save_filename)
+    plt.clf()
 
 def draw_3d_all_states(vertex, edges={}, draw_start_end_node=0, plot_immediate=1, **kwargs):
     ax = plt.axes(projection='3d')
