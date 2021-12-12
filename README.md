@@ -1,4 +1,4 @@
-# pose_graph_optimization_python
+# pose graph optimization python
 This is a python implementation of the pose graph optimization from scratch to understand the backend of Graph Slam. Moreover this can be used to implement a full graph slam solution in the future.
 
 # What is Pose Graph Optimization
